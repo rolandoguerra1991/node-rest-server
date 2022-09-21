@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const DataBase = require("./DataBase");
 
 class Server {
   constructor() {
@@ -10,6 +11,7 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.middleWares();
+    this.dbConnection();
     this.routes();
   }
 
@@ -35,6 +37,11 @@ class Server {
     this.app.listen(this.port, () => {
       console.log("Server Listen on port", this.port);
     });
+  }
+
+  dbConnection() {
+    const dataBase = new DataBase();
+    dataBase.connect();
   }
 }
 
