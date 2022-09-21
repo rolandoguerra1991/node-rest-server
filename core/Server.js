@@ -19,7 +19,6 @@ class Server {
         files.forEach((file) => {
           const url = `${this.prefixUrl}/${file.split('.')[0]}/`;
           const route = `${this.routerPath}/${file}`;
-          console.log(url);
           this.app.use(url, require(route));
         })
       }
