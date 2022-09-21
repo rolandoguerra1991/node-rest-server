@@ -15,15 +15,24 @@ module.exports = {
     const { name, email, password, role } = req.body;
     const user = new User({ name, email, password, role });
     const salt = bcrypt.genSaltSync();
-    
+
     user.password = bcrypt.hashSync(password, salt);
 
     await user.save();
 
     res.json({ user });
   },
-  putUsers: (req = request, res = response) => {
+  putUsers: async (req = request, res = response) => {
     const { id } = req.params;
+    const { password, google, ...rest } = req.body;
+    
+    if(password) {
+      const salt = bcrypt.genSaltSync();
+      rest.password = bcrypt.hashSync(password, salt);
+    }
+
+    await User.findByIdAndUpdate(id, rest);
+    
     res.json({
       message: "PUT API - controller",
       id
